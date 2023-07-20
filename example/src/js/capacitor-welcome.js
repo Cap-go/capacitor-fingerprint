@@ -1,5 +1,5 @@
 import { SplashScreen } from '@capacitor/splash-screen';
-import { Camera } from '@capacitor/camera';
+import { CapacitorFingerprint } from '@capgo/capacitor-fingerprint';
 
 window.customElements.define(
   'capacitor-welcome',
@@ -79,7 +79,13 @@ window.customElements.define(
           This demo shows how to call Capacitor plugins. Say cheese!
         </p>
         <p>
-          <button class="button" id="take-photo">Take Photo</button>
+          <button class="button" id="load">Load plugin</button>
+        </p>
+        <p>
+          <button class="button" id="get-id">Get Id</button>
+        </p>
+        <p>
+          <button class="button" id="get-data">Get data</button>
         </p>
         <p>
           <img id="image" style="max-width: 100%">
@@ -92,18 +98,28 @@ window.customElements.define(
     connectedCallback() {
       const self = this;
 
-      self.shadowRoot.querySelector('#take-photo').addEventListener('click', async function (e) {
+      self.shadowRoot.querySelector('load').addEventListener('click', async function (e) {
         try {
-          const photo = await Camera.getPhoto({
-            resultType: 'uri',
+          await CapacitorFingerprint.load({
+            apiKey: '',
           });
-
-          const image = self.shadowRoot.querySelector('#image');
-          if (!image) {
-            return;
-          }
-
-          image.src = photo.webPath;
+          console.log('load success');
+        } catch (e) {
+          console.warn('User cancelled', e);
+        }
+      });
+      self.shadowRoot.querySelector('get-id').addEventListener('click', async function (e) {
+        try {
+          const res = await CapacitorFingerprint.getVisitorId();
+          console.log('load success', res);
+        } catch (e) {
+          console.warn('User cancelled', e);
+        }
+      });
+      self.shadowRoot.querySelector('get-data').addEventListener('click', async function (e) {
+        try {
+          const res = await CapacitorFingerprint.getVisitorData();
+          console.log('load success', res);
         } catch (e) {
           console.warn('User cancelled', e);
         }
