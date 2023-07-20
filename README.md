@@ -40,14 +40,14 @@ load(options: LoadOptions) => Promise<void>
 ### getVisitorId(...)
 
 ```typescript
-getVisitorId(options: getVisitor) => Promise<VisitorId>
+getVisitorId(option?: getVisitor | undefined) => Promise<{ visitorId: VisitorId; }>
 ```
 
-| Param         | Type                                              |
-| ------------- | ------------------------------------------------- |
-| **`options`** | <code><a href="#getvisitor">getVisitor</a></code> |
+| Param        | Type                                              |
+| ------------ | ------------------------------------------------- |
+| **`option`** | <code><a href="#getvisitor">getVisitor</a></code> |
 
-**Returns:** <code>Promise&lt;string&gt;</code>
+**Returns:** <code>Promise&lt;{ visitorId: string; }&gt;</code>
 
 --------------------
 
@@ -55,27 +55,19 @@ getVisitorId(options: getVisitor) => Promise<VisitorId>
 ### getVisitorData(...)
 
 ```typescript
-getVisitorData(options: getVisitor) => Promise<VisitorData>
+getVisitorData(options?: getVisitor | undefined) => Promise<{ visitorData: VisitorData; }>
 ```
 
 | Param         | Type                                              |
 | ------------- | ------------------------------------------------- |
 | **`options`** | <code><a href="#getvisitor">getVisitor</a></code> |
 
-**Returns:** <code>Promise&lt;<a href="#visitordata">VisitorData</a>&gt;</code>
+**Returns:** <code>Promise&lt;{ visitorData: <a href="#visitordata">VisitorData</a>; }&gt;</code>
 
 --------------------
 
 
 ### Interfaces
-
-
-#### getVisitor
-
-| Prop           | Type                                  |
-| -------------- | ------------------------------------- |
-| **`tags`**     | <code><a href="#tags">Tags</a></code> |
-| **`linkedId`** | <code>string</code>                   |
 
 
 #### VisitorId
@@ -109,6 +101,14 @@ MurmurHash3 by Karan Lyons (https://github.com/karanlyons/murmurHash3.js)
 | ------------------ | --------------------- | ------------------------------------------------------------------------------------- |
 | **`hiddenFields`** | <code>string[]</code> | Fields from the result object that have been hidden (values replaced with empty data) |
 | **`comment`**      | <code>string</code>   | Additional details about the reasons as a human-readable text                         |
+
+
+#### getVisitor
+
+| Prop           | Type                                  |
+| -------------- | ------------------------------------- |
+| **`tags`**     | <code><a href="#tags">Tags</a></code> |
+| **`linkedId`** | <code>string</code>                   |
 
 
 #### ShortVisitorData
@@ -219,6 +219,11 @@ The following substrings are replaced:
 <code>string | typeof defaultScriptUrlPattern | readonly (string | typeof defaultScriptUrlPattern)[]</code>
 
 
+#### VisitorId
+
+<code>string</code>
+
+
 #### Tags
 
 <a href="#tags">Tags</a> are returned in the webhook response so make sure the map you are passing to the library represents a valid JSON.
@@ -231,11 +236,6 @@ The following substrings are replaced:
 <a href="#tags">Tags</a> are returned in the webhook response so make sure the map you are passing to the library represents a valid JSON.
 
 <code>string | number | boolean | <a href="#tags">Tags</a></code>
-
-
-#### VisitorId
-
-<code>string</code>
 
 
 #### VisitorData

@@ -98,34 +98,40 @@ window.customElements.define(
     connectedCallback() {
       const self = this;
 
-      self.shadowRoot.querySelector('load').addEventListener('click', async function (e) {
-        try {
-          await CapacitorFingerprint.load({
-            apiKey: '',
-          });
-          console.log('load success');
-        } catch (e) {
-          console.warn('User cancelled', e);
-        }
-      });
-      self.shadowRoot.querySelector('get-id').addEventListener('click', async function (e) {
-        try {
-          const res = await CapacitorFingerprint.getVisitorId();
-          console.log('load success', res);
-        } catch (e) {
-          console.warn('User cancelled', e);
-        }
-      });
-      self.shadowRoot.querySelector('get-data').addEventListener('click', async function (e) {
-        try {
-          const res = await CapacitorFingerprint.getVisitorData();
-          console.log('load success', res);
-        } catch (e) {
-          console.warn('User cancelled', e);
-        }
-      });
+      self.shadowRoot
+        .querySelector('load')
+        .addEventListener('click', async function (e) {
+          try {
+            await CapacitorFingerprint.load({
+              apiKey: '',
+            });
+            console.log('load success');
+          } catch (e) {
+            console.warn('User cancelled', e);
+          }
+        });
+      self.shadowRoot
+        .querySelector('get-id')
+        .addEventListener('click', async function (e) {
+          try {
+            const res = await CapacitorFingerprint.getVisitorId();
+            console.log('load success', res);
+          } catch (e) {
+            console.warn('User cancelled', e);
+          }
+        });
+      self.shadowRoot
+        .querySelector('get-data')
+        .addEventListener('click', async function (e) {
+          try {
+            const res = await CapacitorFingerprint.getVisitorData();
+            console.log('load success', res);
+          } catch (e) {
+            console.warn('User cancelled', e);
+          }
+        });
     }
-  }
+  },
 );
 
 window.customElements.define(
@@ -154,5 +160,5 @@ window.customElements.define(
     <slot></slot>
     `;
     }
-  }
+  },
 );

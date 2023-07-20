@@ -7,7 +7,7 @@ import FingerprintPro
  */
 @objc(CapacitorFingerprintPlugin)
 public class CapacitorFingerprintPlugin: CAPPlugin {
-    let client;
+    let client
 
     @objc func load(_ call: CAPPluginCall) {
         let apiKey = call.getString("apiKey", "")
@@ -21,9 +21,9 @@ public class CapacitorFingerprintPlugin: CAPPlugin {
         do {
             let visitorId = try await client.getVisitorId()
             print(visitorId)
-                    call.resolve([
-            "visitorId": visitorId
-        ])
+            call.resolve([
+                "visitorId": visitorId
+            ])
         } catch {
             // process error
             call.reject("Error" + error.localizedDescription)
@@ -36,7 +36,7 @@ public class CapacitorFingerprintPlugin: CAPPlugin {
             let visitorData = try await client.getVisitorData()
             print(visitorData)
             call.resolve([
-            "visitorData": visitorData
+                "visitorData": visitorData
             ])
         } catch {
             // process error
