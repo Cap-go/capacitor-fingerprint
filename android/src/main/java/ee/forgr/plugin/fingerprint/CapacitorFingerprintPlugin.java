@@ -30,19 +30,25 @@ public class CapacitorFingerprintPlugin extends Plugin {
     // getVisitorId
     @PluginMethod
     public void getVisitorId(PluginCall call) {
-        fpjsClient.getVisitorId(visitorIdResponse -> {
-            JSObject ret = new JSObject();
-            ret.put("visitorId", visitorIdResponse.getVisitorId());
-            call.resolve(ret);
-            return null;
-        });
+        String tags = call.getArray("tags");
+        String linkedId = call.getString("linkedId");
+        fpjsClient?.getVisitorId(tags?.toHashMap() ?: emptyMap(),
+            linkedId ?: "",
+            { result -> {
+                JSObject ret = new JSObject();
+                ret.put("visitorId", result.getVisitorId());
+                call.resolve(ret);
+                } 
+            },
+            { error -> call.reject("Error: " + getErrorDescription(error))
+        })
 
     }
 
     //getVisitorData
     @PluginMethod
     public void getVisitorData(PluginCall call) {
-        String tags = call.getString("tags");
+        String tags = call.getArray("tags");
         String linkedId = call.getString("linkedId");
 
         // JSObject ret = new JSObject();
@@ -51,7 +57,12 @@ public class CapacitorFingerprintPlugin extends Plugin {
         try {
             fpjsClient?.getVisitorId(tags?.toHashMap() ?: emptyMap(),
                 linkedId ?: "",
-                { result -> call.resolve(Arguments.fromList(listOf(result.requestId, result.confidenceScore.score, result.asJson))) },
+                { result -> {
+                        JSObject ret = new JSObject();
+                        ret.put("visitorData", call.resolve(Arguments.fromList(listOf(result.requestId, result.confidenceScore.score, result.asJson)));
+                        call.resolve(ret);
+                    } 
+                },
                 { error -> call.reject("Error: " + getErrorDescription(error))
             })
         } catch (e: Exception) {
