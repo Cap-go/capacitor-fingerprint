@@ -1,6 +1,6 @@
 {
   "name": "@capgo/capacitor-fingerprint",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Capacitor client for Fingerprint PRO. 100% accurate device identification for fraud detection.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
