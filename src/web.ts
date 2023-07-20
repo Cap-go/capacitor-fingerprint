@@ -13,11 +13,11 @@ export class CapacitorFingerprintWeb
   async load(options: LoadOptions): Promise<void> {
     this.agent = await FingerprintJS.load(options)
   }
-  async getVisitorId(options: getVisitor): Promise<VisitorId> {
+  async getVisitorId(options?: getVisitor): Promise<VisitorId> {
     const result = await this.agent.get(options)
     return result.visitorId
   }
-  async getVisitorData(options: getVisitor): Promise<VisitorData> {
+  async getVisitorData(options?: getVisitor): Promise<VisitorData> {
     const result = await this.agent.get(options)
     return result
   }

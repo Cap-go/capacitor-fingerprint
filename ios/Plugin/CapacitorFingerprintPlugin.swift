@@ -16,7 +16,8 @@ public class CapacitorFingerprintPlugin: CAPPlugin {
     }
 
     @objc func getVisitorId(_ call: CAPPluginCall) {
-        let value = call.getString("value", "")
+        let tags = call.getArray("tags")
+        let linkedId = call.getString("linkedId")
         do {
             let visitorId = try await client.getVisitorId()
             print(visitorId)
@@ -29,22 +30,14 @@ public class CapacitorFingerprintPlugin: CAPPlugin {
         }
     }
     @objc func getVisitorData(_ call: CAPPluginCall) {
+        let tags = call.getArray("tags")
+        let linkedId = call.getString("linkedId")
         do {
-            let metadata = CapacitorFingerprintPlugin.prepareMetadata(linkedId, tags: tags)
-            client?.getVisitorIdResponse(metadata) { result in
-                switch result {
-                case let .failure(error):
-                    let description = error.reactDescription
-                    call.reject("Error: \(description), \(error)")
-                case let .success(visitorDataResponse):
-                    let tuple = [
-                        visitorDataResponse.requestId,
-                        visitorDataResponse.confidence,
-                        visitorDataResponse.asJSON()
-                    ] as [Any]
-                    call.resolve(tuple)
-                }
-            }
+            let visitorData = try await client.getVisitorData()
+            print(visitorData)
+            call.resolve([
+            "visitorData": visitorData
+            ])
         } catch {
             // process error
             call.reject("Error" + error.localizedDescription)
@@ -52,43 +45,5 @@ public class CapacitorFingerprintPlugin: CAPPlugin {
         call.resolve([
             "value": implementation.echo(value)
         ])
-    }
-
-    private static func parseRegion(_ passedRegion: String?, endpoint: String?) -> Region {
-        var region: Region
-        switch passedRegion {
-        case "eu":
-            region = .eu
-        case "ap":
-            region = .ap
-        default:
-            region = .global
-        }
-
-        if let endpointString = endpoint {
-            region = .custom(domain: endpointString)
-        }
-
-        return region
-    }
-
-    private static func prepareMetadata(_ linkedId: String?, tags: Any?) -> Metadata {
-        var metadata = Metadata(linkedId: linkedId)
-        guard
-            let tags = tags,
-            let jsonTags = JSONTypeConvertor.convertObjectToJSONTypeConvertible(tags)
-        else {
-            return metadata
-        }
-
-        if let dict = jsonTags as? [String: JSONTypeConvertible] {
-            dict.forEach { key, jsonType in
-                metadata.setTag(jsonType, forKey: key)
-            }
-        } else {
-            metadata.setTag(jsonTags, forKey: "tag")
-        }
-
-        return metadata
     }
 }

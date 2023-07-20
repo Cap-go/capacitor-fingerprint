@@ -9,7 +9,7 @@ export interface getVisitor {
 }
 export interface CapacitorFingerprintPlugin {
   load(options: LoadOptions): Promise<void>;
-  getVisitorId(options: getVisitor): Promise<VisitorId>;
-  getVisitorData(options: getVisitor): Promise<VisitorData>;
+  getVisitorId(option?: getVisitor): Promise<VisitorId>;
+  getVisitorData(options?: getVisitor): Promise<VisitorData>;
 
 }
